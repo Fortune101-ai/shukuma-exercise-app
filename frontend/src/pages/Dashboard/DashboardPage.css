@@ -1,0 +1,125 @@
+.dashboard-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-page-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-page-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.dashboard-page-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.stat-card-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.stat-icon {
+  font-size: 40px;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.stat-info {
+  flex: 1;
+}
+.stat-label {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.stat-value-small {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+.empty-state {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 24px;
+  font-size: 14px;
+}
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background-color: var(--bg-tertiary);
+  border-radius: 8px;
+  gap: 12px;
+}
+.task-name {
+  flex: 1;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 15px;
+}
+.task-completed {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+.task-check {
+  color: var(--success);
+  font-size: 20px;
+  font-weight: 700;
+}
+.quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.quick-action-link {
+  display: block;
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-page-title {
+    font-size: 28px;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
