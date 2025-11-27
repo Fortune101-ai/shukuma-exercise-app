@@ -4,6 +4,7 @@ import { Provider, useDispatch } from "react-redux";
 import store from "./store/store.js";
 import { setToken } from "./store/slices/auth.slice.js";
 import { loadAuthToken } from "./store/middleware/auth.middleware.js";
+import ToastProvider from "./components/providers/ToastProvider.jsx";
 
 function AppContent() {
   const dispatch = useDispatch();
@@ -35,7 +36,9 @@ function AppContent() {
 function App() {
   return (
     <Provider store={store}>
-      <AppContent />
+      <ToastProvider>
+        <AppContent />
+      </ToastProvider>
     </Provider>
   );
 }
