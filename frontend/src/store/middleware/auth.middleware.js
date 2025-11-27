@@ -34,11 +34,11 @@ export const authMiddleware = (store) => (next) => (action) => {
 };
 
 export const loadAuthToken = () => {
-    try {
-        const token = localStorage.getItem(AUTH_TOKEN);
-        return token || null;
-    } catch (error) {
-        console.error("Failed to load token from localStorage:", error);
-        return null;
-    }
-}
+  try {
+    const token = localStorage.getItem(AUTH_TOKEN);
+    return token || null;
+  } catch (error) {
+    console.error("Failed to load token from localStorage:", error);
+    return null;
+  }
+};
