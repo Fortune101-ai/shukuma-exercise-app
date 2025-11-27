@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import Button from "../../components/ui/Button.jsx";
+import Button from "../../components/ui/Button";
 
 export default function Hero() {
   return (
     <section className="hero">
       <div className="hero-content">
         <h1 className="hero-title">
-          Transform Your{" "}
+          Transform Your
           <span className="hero-title-gradient"> Fitness Journey</span>
         </h1>
         <p className="hero-subtitle">
@@ -17,11 +17,9 @@ export default function Hero() {
         <div className="hero-buttons">
           <Link to="/signup">
             <Button variant="primary" size="large">
-              {" "}
-              Get Started For Free
+              Get Started Free
             </Button>
           </Link>
-
           <Link to="/login">
             <Button variant="secondary" size="large">
               Login
@@ -29,7 +27,6 @@ export default function Hero() {
           </Link>
         </div>
       </div>
-
       <div className="hero-visual">
         <div className="hero-card hero-card-1">
           <div className="hero-card-icon">💪</div>

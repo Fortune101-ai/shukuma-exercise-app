@@ -6,6 +6,8 @@ import { setToken } from "./store/slices/auth.slice.js";
 import { loadAuthToken } from "./store/middleware/auth.middleware.js";
 import ToastProvider from "./components/providers/ToastProvider.jsx";
 import LandingPage from "./pages/LandingPage/LandingPage.jsx";
+import LoginPage from "./pages/Auth/LoginPage.jsx";
+import SignupPage from "./pages/Auth/SignupPage.jsx";
 
 function AppContent() {
   const dispatch = useDispatch();
@@ -14,6 +16,7 @@ function AppContent() {
     const token = loadAuthToken();
     if (token) {
       dispatch(setToken(token));
+      // verify token validity
     }
   }, [dispatch]);
 
@@ -21,6 +24,8 @@ function AppContent() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
