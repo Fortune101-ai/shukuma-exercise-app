@@ -1,6 +1,6 @@
 import express from "express"
 import * as userController from "../controllers/userController.js"
-import { validateProfileUpdate } from "../middleware/validation.js"
+import { validateProfileUpdate,validateAccountDeletion } from "../middleware/validation.js"
 import { asyncHandler } from "../middleware/errorHandler.js"
 
 const router = express.Router()
@@ -15,6 +15,6 @@ router.get("/progress", asyncHandler(userController.getProgress))
 
 router.get("/workout-summary", asyncHandler(userController.getWorkoutSummary))
 
-router.delete("/account", asyncHandler(userController.deleteAccount))
+router.delete("/account",validateAccountDeletion, asyncHandler(userController.deleteAccount))
 
 export default router

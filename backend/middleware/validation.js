@@ -234,3 +234,8 @@ export const validateDateRange = [
     }),
   handleValidationErrors,
 ];
+
+export const validateAccountDeletion = [
+  body("password").notEmpty().withMessage("Password is required to delete account"),
+  handleValidationErrors
+]
