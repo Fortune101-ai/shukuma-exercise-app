@@ -45,6 +45,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    lastLoginAt: {
+      type: Date,
+      default: null,
+    },
     verificationToken: {
       type: String,
       select: false,
