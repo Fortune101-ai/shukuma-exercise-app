@@ -81,6 +81,28 @@ export const validatePasswordReset = [
   handleValidationErrors,
 ];
 
+export const validateChangePassword = [
+  body('currentPassword')
+    .notEmpty()
+    .withMessage('Current password is required'),
+  body('newPassowrd')
+    .isLength({ min: 8 })
+    .withMessage('New password must be at least 8 characters long')
+    .matches(/[a-z]/)
+    .withMessage('New password must contain at least one lowercase letter')
+    .matches(/[A-Z]/)
+    .withMessage('New password must contain at least one uppercase letter')
+    .matches(/[0-9]/)
+    .withMessage('New password must contain at least one number')
+    .custom((value, { req }) => {
+      if (value === req.body.currentPassword) {
+        throw new Error('New password must be different from current password');
+      }
+      return true;
+    }),
+  handleValidationErrors,
+];
+
 export const validateProfileUpdate = [
   body('name')
     .optional()

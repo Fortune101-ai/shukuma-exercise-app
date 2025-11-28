@@ -6,6 +6,7 @@ import {
   validateLogin,
   validatePasswordResetRequest,
   validatePasswordReset,
+  validateChangePassword,
 } from '../middleware/validation.js';
 import {
   authLimiter,
@@ -54,6 +55,7 @@ router.post(
 router.post(
   '/change-password',
   authMiddleware,
+  validateChangePassword,
   asyncHandler(authController.changePassword)
 );
 
