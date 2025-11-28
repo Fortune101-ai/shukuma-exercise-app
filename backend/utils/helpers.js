@@ -107,45 +107,45 @@ export const cleanObject = (obj) => {
   return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
 };
 
-export const getMoodScore = (mood)=>{
+export const getMoodScore = (mood) => {
   const moodScores = {
-    terrible:1,
-    bad:2,
-    okay:3,
-    good:4,
-    great:5
-  }
+    terrible: 1,
+    bad: 2,
+    okay: 3,
+    good: 4,
+    great: 5,
+  };
 
-  return moodScores[mood] || 0
-}
+  return moodScores[mood] || 0;
+};
 
-export const getMoodEmoji = (mood) =>{
+export const getMoodEmoji = (mood) => {
   const moodEmojies = {
-    terrible:"😰",
-    bad:"😔",
-    okay:"😐",
-    good:"😊",
-    great:"😀"
-  }
+    terrible: '😰',
+    bad: '😔',
+    okay: '😐',
+    good: '😊',
+    great: '😀',
+  };
 
-  return moodEmojis[mood] || "❓"
-}
+  return moodEmojis[mood] || '❓';
+};
 
 export const groupEntriesByDate = (entries) => {
-  const grouped = {}
+  const grouped = {};
 
-  entries.forEach((entry)=>{
-    const date = new Date(entry.date).toISOString().split("T")[0]
-    if (!grouped[date]){
-      grouped[date] =[]
+  entries.forEach((entry) => {
+    const date = new Date(entry.date).toISOString().split('T')[0];
+    if (!grouped[date]) {
+      grouped[date] = [];
     }
-    grouped[date].push(entry)
-  })
+    grouped[date].push(entry);
+  });
 
-  return grouped
-}
+  return grouped;
+};
 
 export const getRecentJournalEntries = (entries, days = 7) => {
-  const cutoffDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000)
-  return entries.filter((entry) => new Date(entry.date) > cutoffDate)
-}
+  const cutoffDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+  return entries.filter((entry) => new Date(entry.date) > cutoffDate);
+};
