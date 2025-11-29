@@ -8,6 +8,7 @@ import {
   NotFoundError,
 } from '../middleware/errorHandler.js';
 import { sanitizeUser } from '../utils/helpers.js';
+import { sendWelcomeEmail, sendPasswordResetEmail } from '../services/emailService.js';
 import logger from '../utils/logger.js';
 
 export const signup = async (req, res) => {
@@ -37,6 +38,9 @@ export const signup = async (req, res) => {
 
   await user.save();
 
+  sendWelcomeEmail(user.email, user.name).catch(err=>{
+    logger.error("Failed to send welcome email: ",err)
+  })
   const token = generateToken(user._id, user.email);
 
   logger.info(`New user registered: ${user.email}`);
@@ -125,7 +129,10 @@ export const forgotPassword = async (req, res) => {
   user.resetTokenExpiry = new Date(Date.now() + 3600000);
   await user.save();
 
-  // TODO: Send email
+  sendPasswordResetEmail(user.email, user.name, resetToken).catch(err=>{
+    logger.error("Failed to send password reset email: ",err)
+  })
+
   logger.info(`Password reset requested for: ${user.email}`);
 
   if (process.env.NODE_ENV === 'development') {
