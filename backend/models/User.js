@@ -207,8 +207,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.index({ email: 1 });
-userSchema.index({ username: 1 });
 userSchema.index({ createdAt: -1 });
 userSchema.index({ friends: 1 });
 
