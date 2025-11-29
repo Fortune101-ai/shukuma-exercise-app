@@ -241,3 +241,18 @@ export const validateAccountDeletion = [
     .withMessage('Password is required to delete account'),
   handleValidationErrors,
 ];
+
+export const validateTrigger = [
+  body('trigger')
+    .trim()
+    .notEmpty()
+    .withMessage('Trigger is required')
+    .isLength({ max: 200 })
+    .withMessage('Trigger cannot exceed 500 characters'),
+  body('notes')
+    .optional()
+    .trim()
+    .isLength({ max: 500 })
+    .withMessage('Notes cannot exceed 500 characters'),
+  handleValidationErrors,
+];
