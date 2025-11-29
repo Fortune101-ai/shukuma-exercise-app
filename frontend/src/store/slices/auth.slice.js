@@ -33,7 +33,7 @@ export const authSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
-    cleanError:(state) => {
+    clearError:(state) => {
       state.error = null
     },
     logout: (state) => {
@@ -52,7 +52,7 @@ export const {
   setToken,
   setLoading,
   setError,
-  cleanError,
+  clearError,
   logout,
 } = authSlice.actions;
 
