@@ -255,24 +255,18 @@ userSchema.statics.findByEmail = function (email) {
   return this.findOne({ email: email.toLowerCase() });
 };
 
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('passwordHash')) return next();
+userSchema.pre('save', async function () {
+  if (!this.isModified('passwordHash')) return;
 
-  try {
-    const rounds = parseInt(process.env.BCRYPT_ROUNDS) || 10;
-    this.passwordHash = await bcrypt.hash(this.passwordHash, rounds);
-    next();
-  } catch (error) {
-    next(error);
-  }
+  const rounds = parseInt(process.env.BCRYPT_ROUNDS) || 10;
+  this.passwordHash = await bcrypt.hash(this.passwordHash, rounds);
 });
 
-userSchema.pre('save', function (next) {
+userSchema.pre('save', function () {
   if (!this.username && this.email) {
     const emailPrefix = this.email.split('@')[0];
     this.username = emailPrefix.toLowerCase().replace(/[^a-z0-9_]/g, '');
   }
-  next();
 });
 
 export default mongoose.model('User', userSchema);
