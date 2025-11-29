@@ -1,86 +1,96 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { userApi, taskApi } from "../../services/api";
-import Card, { CardHeader, CardBody } from "../../components/ui/Card";
-import Button from "../../components/ui/Button";
-import Spinner from "../../components/ui/Spinner";
-import useToast from "../../hooks/useToast";
-import "./DashboardPage.css";
+import { useState, useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { Link, useNavigate } from "react-router-dom"
+import { logout } from "../../store/slices/auth.slice.js"
+import { userApi, taskApi } from "../../services/api"
+import Card, { CardHeader, CardBody } from "../../components/ui/Card"
+import Button from "../../components/ui/Button"
+import Spinner from "../../components/ui/Spinner"
+import useToast from "../../hooks/useToast"
+import "./DashboardPage.css"
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
     totalWorkouts: 0,
     streak: 0,
-    tasksCompleted: 0,
     nextChallenge: "",
-  });
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const toast = useToast();
+    tasksCompleted: 0,
+    totalTasks: 0,
+    workoutsThisWeek: 0,
+  })
+  const [tasks, setTasks] = useState([])
+  const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const toast = useToast()
 
   useEffect(() => {
-    fetchDashboardData();
-  }, []);
+    fetchDashboardData()
+  }, [])
 
   const fetchDashboardData = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      // TODO: Replace with real API calls when backend is ready
-      // const [statsData, tasksData] = await Promise.all([
-      //   userApi.getStats(),
-      //   taskApi.getAll()
-      // ])
-
-      // Mock data for now
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      const [statsData, tasksData] = await Promise.all([
+        userApi.getStats(),
+        taskApi.getAll({ completed: false, limit: 5 }),
+      ])
 
       setStats({
-        totalWorkouts: 42,
-        streak: 7,
-        tasksCompleted: 28,
-        nextChallenge: "30 Day Challenge",
-      });
+        totalWorkouts: statsData.totalWorkouts,
+        streak: statsData.streak,
+        tasksCompleted: statsData.tasksCompleted,
+        totalTasks: statsData.totalTasks,
+        nextChallenge: statsData.nextChallenge,
+        workoutsThisWeek: statsData.workoutsThisWeek,
+      })
 
-      setTasks([
-        { _id: "1", name: "Complete morning workout", completed: false },
-        { _id: "2", name: "Log today's meals", completed: false },
-        { _id: "3", name: "Drink 8 glasses of water", completed: false },
-      ]);
-    } catch (error) {
-      toast.error("Failed to load dashboard data");
-      console.error(error);
+      setTasks(tasksData.tasks || [])
+    } catch (err) {
+      console.error("Error fetching dashboard data:", err)
+      toast.error("Failed to load dashboard data")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleCompleteTask = async (taskId) => {
     try {
-      // TODO: Call API when backend is ready
-      // await taskApi.complete(taskId)
-
-      setTasks((prev) =>
-        prev.map((task) =>
-          task._id === taskId ? { ...task, completed: true } : task,
-        ),
-      );
-      toast.success("Task completed!");
-    } catch (error) {
-      toast.error("Failed to complete task");
+      await taskApi.toggle(taskId)
+      
+      setTasks((prev) => prev.filter((task) => task._id !== taskId))
+      setStats((prev) => ({
+        ...prev,
+        tasksCompleted: prev.tasksCompleted + 1,
+      }))
+      
+      toast.success("Task completed!")
+    } catch (err) {
+      console.error("Error completing task:", err)
+      toast.error("Failed to complete task")
     }
-  };
+  }
+
+  const handleLogout = () => {
+    dispatch(logout())
+    toast.success("Logged out successfully")
+    navigate("/login")
+  }
 
   if (loading) {
-    return <Spinner fullScreen text="Loading dashboard..." />;
+    return <Spinner fullScreen text="Loading dashboard..." />
   }
 
   return (
     <div className="dashboard-page">
       <div className="dashboard-page-header">
-        <h1 className="dashboard-page-title">Dashboard</h1>
-        <p className="dashboard-page-subtitle">
-          Welcome back! Here's your fitness overview.
-        </p>
+        <div>
+          <h1 className="dashboard-page-title">Dashboard</h1>
+          <p className="dashboard-page-subtitle">Welcome back! Here's your fitness overview.</p>
+        </div>
+        <Button variant="ghost" size="small" onClick={handleLogout}>
+          Logout
+        </Button>
       </div>
 
       <div className="stats-grid">
@@ -114,7 +124,9 @@ export default function DashboardPage() {
               <div className="stat-icon">✓</div>
               <div className="stat-info">
                 <div className="stat-label">Tasks Completed</div>
-                <div className="stat-value">{stats.tasksCompleted}</div>
+                <div className="stat-value">
+                  {stats.tasksCompleted}/{stats.totalTasks}
+                </div>
               </div>
             </div>
           </CardBody>
@@ -123,12 +135,10 @@ export default function DashboardPage() {
         <Card variant="elevated" hover>
           <CardBody>
             <div className="stat-card-content">
-              <div className="stat-icon">🎯</div>
+              <div className="stat-icon">📊</div>
               <div className="stat-info">
-                <div className="stat-label">Next Challenge</div>
-                <div className="stat-value-small">
-                  {stats.nextChallenge || "None"}
-                </div>
+                <div className="stat-label">This Week</div>
+                <div className="stat-value">{stats.workoutsThisWeek}</div>
               </div>
             </div>
           </CardBody>
@@ -142,26 +152,22 @@ export default function DashboardPage() {
           </CardHeader>
           <CardBody>
             {tasks.length === 0 ? (
-              <p className="empty-state">No tasks for today</p>
+              <div className="empty-state">
+                <p>No pending tasks</p>
+                <Link to="/tasks">
+                  <Button variant="secondary" size="small" style={{ marginTop: "12px" }}>
+                    Create Task
+                  </Button>
+                </Link>
+              </div>
             ) : (
               <div className="task-list">
                 {tasks.map((task) => (
                   <div key={task._id} className="task-item">
-                    <span
-                      className={`task-name ${task.completed ? "task-completed" : ""}`}
-                    >
-                      {task.name}
-                    </span>
-                    {!task.completed && (
-                      <Button
-                        variant="primary"
-                        size="small"
-                        onClick={() => handleCompleteTask(task._id)}
-                      >
-                        Complete
-                      </Button>
-                    )}
-                    {task.completed && <span className="task-check">✓</span>}
+                    <span className="task-name">{task.title}</span>
+                    <Button variant="primary" size="small" onClick={() => handleCompleteTask(task._id)}>
+                      Complete
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -185,9 +191,9 @@ export default function DashboardPage() {
                   Write Journal Entry
                 </Button>
               </Link>
-              <Link to="/nutrition" className="quick-action-link">
+              <Link to="/challenges" className="quick-action-link">
                 <Button variant="secondary" size="medium" fullWidth>
-                  Log Meal
+                  View Challenges
                 </Button>
               </Link>
             </div>
@@ -195,5 +201,5 @@ export default function DashboardPage() {
         </Card>
       </div>
     </div>
-  );
+  )
 }
