@@ -53,8 +53,7 @@ export const getFoodLogs = async (req, res) => {
       return logDate === targetDate;
     });
   } else if (startDate || endDate) {
-    const start = startDate ? new Date(startDate) : new Date(0);
-    const end = endDate ? new Date(endDate) : new Date();
+    const {start,end} = getDateRange(startDate || new Date(0), endDate || new Date())
 
     logs = logs.filter((log) => {
       const logDate = new Date(log.date);
