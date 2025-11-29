@@ -1,7 +1,6 @@
 import User from '../models/User.js';
 import ExerciseCard from '../models/ExerciseCard.js';
 import { NotFoundError } from '../middleware/errorHandler.js';
-import { isToday, isYesterday } from '../utils/helpers.js';
 import logger from '../utils/logger.js';
 
 export const logWorkout = async (req, res) => {
