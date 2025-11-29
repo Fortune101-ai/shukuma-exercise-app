@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "../../store/slices/auth.slice.js";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setCredentials,
+  setLoading,
+  setError,
+  clearError,
+  selectAuthLoading,
+  selectAuthError,
+} from "../../store/slices/auth.slice";
 import { authApi } from "../../services/api";
 import useToast from "../../hooks/useToast";
 import Button from "../../components/ui/Button";
@@ -10,13 +17,13 @@ import "./Auth.css";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
+    name: "",
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
   const [passwordStrength, setPasswordStrength] = useState({
     score: 0,
     text: "",
@@ -25,15 +32,26 @@ export default function SignupPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toast = useToast();
+  const loading = useSelector(selectAuthLoading);
+  const error = useSelector(selectAuthError);
+
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error, toast]);
+
   const calculatePasswordStrength = (password) => {
     if (!password) return { score: 0, text: "", color: "" };
+
     let score = 0;
 
-    // Length check
     if (password.length >= 8) score += 1;
     if (password.length >= 12) score += 1;
-
-    // Character variety
     if (/[a-z]/.test(password)) score += 1;
     if (/[A-Z]/.test(password)) score += 1;
     if (/[0-9]/.test(password)) score += 1;
@@ -54,37 +72,44 @@ export default function SignupPage() {
   };
 
   const validateForm = () => {
-    const newErrors = {};
+    const errors = {};
 
-    if (!formData.username) {
-      newErrors.username = "Username is required";
-    } else if (formData.username.length < 3) {
-      newErrors.username = "Username must be at least 3 characters";
-    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
-      newErrors.username =
+    if (!formData.name) {
+      errors.name = "Name is required";
+    } else if (formData.name.length < 2) {
+      errors.name = "Name must be at least 2 characters";
+    }
+
+    if (formData.username && formData.username.length < 3) {
+      errors.username = "Username must be at least 3 characters";
+    } else if (
+      formData.username &&
+      !/^[a-zA-Z0-9_]+$/.test(formData.username)
+    ) {
+      errors.username =
         "Username can only contain letters, numbers, and underscores";
     }
 
     if (!formData.email) {
-      newErrors.email = "Email is required";
+      errors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
+      errors.email = "Email is invalid";
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      errors.password = "Password is required";
     } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+      errors.password = "Password must be at least 8 characters";
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password";
+      errors.confirmPassword = "Please confirm your password";
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+      errors.confirmPassword = "Passwords do not match";
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handleChange = (e) => {
@@ -95,49 +120,53 @@ export default function SignupPage() {
       setPasswordStrength(calculatePasswordStrength(value));
     }
 
-    // Clear error for this field
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
+    if (formErrors[name]) {
+      setFormErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+
+    if (error) {
+      dispatch(clearError());
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!validateForm()) {
       return;
     }
 
-    setLoading(true);
+    dispatch(setLoading(true));
 
     try {
-      // TODO: Replace with actual API call when backend is ready
-      // const data = await authApi.signup({
-      //   username: formData.username,
-      //   email: formData.email,
-      //   password: formData.password,
-      // })
-
-      // Mock successful signup for now
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      const mockData = {
-        user: {
-          id: "user" + Date.now(),
-          username: formData.username,
-          email: formData.email,
-        },
-        token: "mock-jwt-token-" + Date.now(),
+      const signupData = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
       };
 
-      dispatch(setCredentials(mockData));
-      toast.success("Account created successfully!");
+      if (formData.username) {
+        signupData.username = formData.username;
+      }
+
+      const data = await authApi.signup(signupData);
+
+      dispatch(
+        setCredentials({
+          user: data.user,
+          token: data.token,
+        })
+      );
+
+      toast.success("Account created successfully! Welcome to Shukuma!");
       navigate("/dashboard");
-    } catch (error) {
-      toast.error(error.message || "Signup failed. Please try again.");
+    } catch (err) {
+      dispatch(setError(err.message || "Signup failed. Please try again."));
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   };
+
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -145,17 +174,32 @@ export default function SignupPage() {
           <h1 className="auth-title">Create Account</h1>
           <p className="auth-subtitle">Start your fitness journey today</p>
         </div>
+
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
           <Input
-            label="Username"
+            label="Full Name"
             type="text"
-            name="username"
-            placeholder="Choose a username"
-            value={formData.username}
+            name="name"
+            placeholder="John Doe"
+            value={formData.name}
             onChange={handleChange}
-            error={errors.username}
+            error={formErrors.name}
             fullWidth
             required
+            disabled={loading}
+          />
+
+          <Input
+            label="Username (Optional)"
+            type="text"
+            name="username"
+            placeholder="johndoe"
+            value={formData.username}
+            onChange={handleChange}
+            error={formErrors.username}
+            helperText="Letters, numbers, and underscores only"
+            fullWidth
+            disabled={loading}
           />
 
           <Input
@@ -165,9 +209,10 @@ export default function SignupPage() {
             placeholder="your@email.com"
             value={formData.email}
             onChange={handleChange}
-            error={errors.email}
+            error={formErrors.email}
             fullWidth
             required
+            disabled={loading}
           />
 
           <div>
@@ -178,9 +223,10 @@ export default function SignupPage() {
               placeholder="Create a strong password"
               value={formData.password}
               onChange={handleChange}
-              error={errors.password}
+              error={formErrors.password}
               fullWidth
               required
+              disabled={loading}
             />
             {formData.password && (
               <div className="password-strength">
@@ -210,9 +256,10 @@ export default function SignupPage() {
             placeholder="Confirm your password"
             value={formData.confirmPassword}
             onChange={handleChange}
-            error={errors.confirmPassword}
+            error={formErrors.confirmPassword}
             fullWidth
             required
+            disabled={loading}
           />
 
           <Button
@@ -231,7 +278,7 @@ export default function SignupPage() {
         </div>
 
         <Link to="/login">
-          <Button variant="ghost" size="large" fullWidth>
+          <Button variant="ghost" size="large" fullWidth disabled={loading}>
             Login
           </Button>
         </Link>

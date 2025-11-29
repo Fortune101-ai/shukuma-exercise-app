@@ -1,7 +1,14 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "../../store/slices/auth.slice.js";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setCredentials,
+  setLoading,
+  setError,
+  clearError,
+  selectAuthLoading,
+  selectAuthError,
+} from "../../store/slices/auth.slice";
 import { authApi } from "../../services/api";
 import useToast from "../../hooks/useToast";
 import Button from "../../components/ui/Button";
@@ -13,37 +20,55 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const toast = useToast();
+  const loading = useSelector(selectAuthLoading);
+  const error = useSelector(selectAuthError);
+
+  const from = location.state?.from?.pathname || "/dashboard";
+
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error, toast]);
 
   const validateForm = () => {
-    const newErrors = {};
+    const errors = {};
 
     if (!formData.email) {
-      newErrors.email = "Email is required";
+      errors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
+      errors.email = "Email is invalid";
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      errors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      errors.password = "Password must be at least 6 characters";
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error for this field
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
+
+    if (formErrors[name]) {
+      setFormErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+
+    if (error) {
+      dispatch(clearError());
     }
   };
 
@@ -54,31 +79,24 @@ export default function LoginPage() {
       return;
     }
 
-    setLoading(true);
+    dispatch(setLoading(true));
 
     try {
-      // TODO: Replace with actual API call when backend is ready
-      // const data = await authApi.login(formData)
+      const data = await authApi.login(formData);
 
-      // Mock successful login for now
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      dispatch(
+        setCredentials({
+          user: data.user,
+          token: data.token,
+        })
+      );
 
-      const mockData = {
-        user: {
-          id: "user123",
-          username: "testuser",
-          email: formData.email,
-        },
-        token: "mock-jwt-token-" + Date.now(),
-      };
-
-      dispatch(setCredentials(mockData));
       toast.success("Welcome back!");
-      navigate("/dashboard");
-    } catch (error) {
-      toast.error(error.message || "Login failed. Please try again.");
+      navigate(from, { replace: true });
+    } catch (err) {
+      dispatch(setError(err.message || "Login failed. Please try again."));
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   };
 
@@ -100,9 +118,10 @@ export default function LoginPage() {
             placeholder="your@email.com"
             value={formData.email}
             onChange={handleChange}
-            error={errors.email}
+            error={formErrors.email}
             fullWidth
             required
+            disabled={loading}
           />
 
           <Input
@@ -112,9 +131,10 @@ export default function LoginPage() {
             placeholder="Enter your password"
             value={formData.password}
             onChange={handleChange}
-            error={errors.password}
+            error={formErrors.password}
             fullWidth
             required
+            disabled={loading}
           />
 
           <div className="auth-forgot">
@@ -139,7 +159,7 @@ export default function LoginPage() {
         </div>
 
         <Link to="/signup">
-          <Button variant="ghost" size="large" fullWidth>
+          <Button variant="ghost" size="large" fullWidth disabled={loading}>
             Create Account
           </Button>
         </Link>
