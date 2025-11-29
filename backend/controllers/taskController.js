@@ -104,7 +104,6 @@ export const updateTask = async (req, res) => {
     throw new NotFoundError('Task');
   }
 
-  // Update fields
   if (title !== undefined) {
     task.title = title;
   }
@@ -137,7 +136,6 @@ export const toggleTaskCompletion = async (req, res) => {
     throw new NotFoundError('Task');
   }
 
-  // Toggle completion status
   task.completed = !task.completed;
 
   await user.save();
@@ -244,13 +242,11 @@ export const getTaskStats = async (req, res) => {
   const completionRate =
     totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
-  // Tasks created this week
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const tasksThisWeek = user.tasks.filter(
     (t) => new Date(t.createdAt) > weekAgo
   ).length;
 
-  // Tasks completed this week
   const completedThisWeek = user.tasks.filter(
     (t) => t.completed && new Date(t.createdAt) > weekAgo
   ).length;
