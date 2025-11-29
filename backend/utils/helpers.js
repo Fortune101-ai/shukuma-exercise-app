@@ -8,7 +8,7 @@ export const generateRandomString = (length = 32) => {
   return result;
 };
 
-export const saniteUser = (user) => {
+export const sanitizeUser = (user) => {
   const userObj = user.toObject ? user.toObject() : user;
   delete userObj.passwordHash;
   delete userObj.verificationToken;
@@ -16,6 +16,14 @@ export const saniteUser = (user) => {
   delete userObj.resetTokenExpiry;
   delete userObj.__v;
   return userObj;
+};
+
+export const parsePagination = (query) => {
+  const page = parseInt(query.page) || 1;
+  const limit = parseInt(query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  return { page, limit, skip };
 };
 
 export const getPaginationMeta = (page, limit, total) => {
@@ -120,7 +128,7 @@ export const getMoodScore = (mood) => {
 };
 
 export const getMoodEmoji = (mood) => {
-  const moodEmojies = {
+  const moodEmojis = {
     terrible: '😰',
     bad: '😔',
     okay: '😐',
