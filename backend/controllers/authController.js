@@ -188,7 +188,7 @@ export const changePassword = async (req, res) => {
     throw new NotFoundError('User');
   }
 
-  const isPasswordValid = await bcryptjs.compare(
+  const isPasswordValid = await bcrypt.compare(
     currentPassword,
     user.passwordHash
   );

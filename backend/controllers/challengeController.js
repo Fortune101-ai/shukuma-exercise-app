@@ -172,14 +172,12 @@ export const leaveChallenge = async (req, res) => {
     throw new NotFoundError('Challenge');
   }
 
-  // Check if participating
   if (!challenge.participants.includes(req.userId)) {
     return res.status(400).json({
       message: 'You are not participating in this challenge',
     });
   }
 
-  // Remove user from challenge
   await challenge.removeParticipant(req.userId);
 
   logger.info(`User ${req.userId} left challenge: ${challenge.title}`);
@@ -189,9 +187,6 @@ export const leaveChallenge = async (req, res) => {
   });
 };
 
-/**
- * Update challenge progress
- */
 export const updateChallengeProgress = async (req, res) => {
   const { id } = req.params;
   const { value } = req.body;
@@ -208,14 +203,12 @@ export const updateChallengeProgress = async (req, res) => {
     throw new NotFoundError('Challenge');
   }
 
-  // Check if participating
   if (!challenge.participants.includes(req.userId)) {
     return res.status(403).json({
       message: 'You must join the challenge before updating progress',
     });
   }
 
-  // Check if challenge is ongoing
   const now = new Date();
   if (
     now < new Date(challenge.startDate) ||
@@ -226,7 +219,6 @@ export const updateChallengeProgress = async (req, res) => {
     });
   }
 
-  // Update progress
   await challenge.updateProgress(req.userId, value);
 
   logger.info(
@@ -239,9 +231,6 @@ export const updateChallengeProgress = async (req, res) => {
   });
 };
 
-/**
- * Get user's joined challenges
- */
 export const getMyJoinedChallenges = async (req, res) => {
   const { status = 'active' } = req.query;
 
@@ -251,7 +240,6 @@ export const getMyJoinedChallenges = async (req, res) => {
     isActive: true,
   };
 
-  // Filter by status
   if (status === 'active') {
     filter.startDate = { $lte: now };
     filter.endDate = { $gte: now };
@@ -263,7 +251,6 @@ export const getMyJoinedChallenges = async (req, res) => {
 
   const challenges = await Challenge.find(filter).sort({ endDate: 1 });
 
-  // Add user's progress to each challenge
   const challengesWithProgress = challenges.map((challenge) => {
     const progress = challenge.progress.find(
       (p) => p.userId.toString() === req.userId
@@ -283,9 +270,6 @@ export const getMyJoinedChallenges = async (req, res) => {
   });
 };
 
-/**
- * Get challenge leaderboard
- */
 export const getChallengeLeaderboard = async (req, res) => {
   const { id } = req.params;
   const { limit = 10 } = req.query;
@@ -299,7 +283,6 @@ export const getChallengeLeaderboard = async (req, res) => {
     throw new NotFoundError('Challenge');
   }
 
-  // Get leaderboard
   const leaderboard = await challenge.getLeaderboard();
 
   res.json({
@@ -309,9 +292,6 @@ export const getChallengeLeaderboard = async (req, res) => {
   });
 };
 
-/**
- * Get active challenges
- */
 export const getActiveChallenges = async (req, res) => {
   const challenges = await Challenge.getActive();
 
@@ -321,9 +301,6 @@ export const getActiveChallenges = async (req, res) => {
   });
 };
 
-/**
- * Get upcoming challenges
- */
 export const getUpcomingChallenges = async (req, res) => {
   const challenges = await Challenge.getUpcoming();
 
@@ -333,9 +310,6 @@ export const getUpcomingChallenges = async (req, res) => {
   });
 };
 
-/**
- * Delete challenge (creator only)
- */
 export const deleteChallenge = async (req, res) => {
   const { id } = req.params;
 
@@ -345,7 +319,6 @@ export const deleteChallenge = async (req, res) => {
     throw new NotFoundError('Challenge');
   }
 
-  // Check if user is the creator
   if (challenge.createdBy && challenge.createdBy.toString() !== req.userId) {
     throw new ForbiddenError(
       'Only the challenge creator can delete this challenge'
@@ -361,9 +334,6 @@ export const deleteChallenge = async (req, res) => {
   });
 };
 
-/**
- * Get challenge statistics
- */
 export const getChallengeStats = async (req, res) => {
   const totalChallenges = await Challenge.countDocuments({ isActive: true });
 
@@ -378,7 +348,6 @@ export const getChallengeStats = async (req, res) => {
     startDate: { $gt: new Date() },
   });
 
-  // Get user's participation
   let userParticipating = 0;
   let userCompleted = 0;
 
