@@ -1,0 +1,235 @@
+.nutrition-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.nutrition-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.nutrition-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.nutrition-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.meals-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.meals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meal-item {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.remove-meal-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 10px;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
+.remove-meal-btn:hover {
+  opacity: 1;
+}
+
+.nutrition-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.nutrition-textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.guides-section,
+.logs-section {
+  margin-top: 40px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.guides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.guide-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 16px 0;
+}
+
+.meal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.meal-list-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.meal-list-item:last-child {
+  border-bottom: none;
+}
+
+.meal-name {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.meal-calories {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.logs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.log-date {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.delete-log-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  opacity: 0.6;
+  padding: 4px 8px;
+  transition: opacity var(--transition-fast);
+}
+
+.delete-log-btn:hover {
+  opacity: 1;
+}
+
+.log-meals {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.log-meal-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background-color: var(--bg-tertiary);
+  border-radius: 8px;
+}
+
+.meal-info {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.meal-time {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.log-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--gradient-primary);
+  border-radius: 8px;
+  color: white;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.total-value {
+  font-size: 18px;
+}
+
+.log-notes {
+  margin-top: 16px;
+  padding: 12px;
+  background-color: var(--bg-tertiary);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .meal-item {
+    grid-template-columns: 1fr;
+  }
+
+  .guides-grid {
+    grid-template-columns: 1fr;
+  }
+}

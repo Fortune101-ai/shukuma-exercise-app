@@ -1,52 +1,35 @@
 .card {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   transition: all var(--transition-base);
-}
-
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--primary);
-}
-
-.card-default {
-  /* Default styling */
-}
-
-.card-elevated {
+  overflow: hidden;
   box-shadow: var(--shadow-md);
 }
 
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-purple);
+  border-color: var(--primary);
+}
+
+.card-elevated {
+  box-shadow: var(--shadow-lg);
+  background-color: var(--bg-elevated);
+}
+
 .card-outlined {
-  border: 2px solid var(--border);
+  border: 2px solid var(--border-light);
 }
 
-.card-padding-none {
-  padding: 0;
+.card-yellow-accent {
+  border-left: 4px solid var(--primary);
 }
 
-.card-padding-small {
-  padding: 12px;
+.card-glow {
+  box-shadow: var(--shadow-purple);
 }
 
-.card-padding-medium {
-  padding: 20px;
-}
-
-.card-padding-large {
-  padding: 32px;
-}
-
-.card-header {
-  margin-bottom: 16px;
-}
-.card-body {
-  flex: 1;
-}
-.card-footer {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
+.card-glow:hover {
+  box-shadow: var(--shadow-purple-lg);
 }

@@ -1,0 +1,226 @@
+.exercise-card-container {
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 2/3;
+  perspective: 1000px;
+  margin: 0 auto;
+}
+
+.exercise-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.exercise-card-container.flipped .exercise-card-inner {
+  transform: rotateY(180deg);
+}
+
+.exercise-card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  border: 3px solid var(--border);
+}
+
+.card-back {
+  background: var(--bg-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.card-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(251, 191, 36, 0.03) 10px,
+      rgba(251, 191, 36, 0.03) 20px
+    );
+}
+
+.card-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  z-index: 1;
+}
+
+.card-logo-icon {
+  font-size: 80px;
+  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.5));
+}
+
+.card-logo-text {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--primary);
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+  letter-spacing: 4px;
+}
+
+.card-front {
+  background: var(--bg-primary);
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-image {
+  flex: 1.2;
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  border-bottom: 3px solid var(--primary);
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-placeholder {
+  font-size: 100px;
+  opacity: 0.2;
+}
+
+.card-placeholder-icon {
+  filter: grayscale(1);
+}
+
+.card-content {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--bg-primary);
+  position: relative;
+}
+
+.card-exercise-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+}
+
+.card-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 900;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.card-stat-divider {
+  width: 2px;
+  height: 40px;
+  background: var(--border);
+}
+
+.card-description {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.card-difficulty-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: var(--shadow-md);
+}
+
+.badge-beginner {
+  background: var(--success);
+  color: white;
+}
+
+.badge-intermediate {
+  background: var(--warning);
+  color: white;
+}
+
+.badge-advanced {
+  background: var(--error);
+  color: white;
+}
+
+@media (max-width: 480px) {
+  .exercise-card-container {
+    max-width: 320px;
+  }
+
+  .card-logo-icon {
+    font-size: 60px;
+  }
+
+  .card-logo-text {
+    font-size: 24px;
+  }
+
+  .card-exercise-name {
+    font-size: 18px;
+  }
+
+  .stat-value {
+    font-size: 28px;
+  }
+}

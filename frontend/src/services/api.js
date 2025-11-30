@@ -25,6 +25,7 @@ async function handleResponse(response) {
 }
 
 async function request(endpoint, options = {}) {
+  // Get token from localStorage directly
   const token = localStorage.getItem("shukuma_auth_token");
 
   const config = {
@@ -44,6 +45,9 @@ async function request(endpoint, options = {}) {
     return await handleResponse(response);
   } catch (error) {
     if (error instanceof ApiError) {
+      if (error.status === 401 && token) {
+        localStorage.removeItem("shukuma_auth_token");
+      }
       throw error;
     }
     throw new ApiError("Network error. Please check your connection.", 0, null);
@@ -332,4 +336,5 @@ export const triggerApi = {
     }),
   getStats: () => request("/triggers/stats"),
 };
+
 export { ApiError };

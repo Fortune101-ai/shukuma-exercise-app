@@ -1,6 +1,6 @@
 import { setToken, logout } from "../slices/auth.slice.js";
 
-const AUTH_TOKEN = "auth_token";
+const AUTH_TOKEN = "shukuma_auth_token";
 
 export const authMiddleware = (store) => (next) => (action) => {
   const result = next(action);

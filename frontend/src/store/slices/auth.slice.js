@@ -21,6 +21,9 @@ export const authSlice = createSlice({
     },
     setUser: (state, action) => {
       state.user = action.payload;
+      if (action.payload) {
+        state.isAuthenticated = true;
+      }
     },
     setToken: (state, action) => {
       state.token = action.payload;
@@ -33,15 +36,15 @@ export const authSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
-    clearError:(state) => {
-      state.error = null
+    clearError: (state) => {
+      state.error = null;
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
       state.error = null;
-      state.loading = false
+      state.loading = false;
     },
   },
 });
