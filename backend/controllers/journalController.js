@@ -61,7 +61,10 @@ export const getJournalEntries = async (req, res) => {
   }
 
   if (startDate || endDate) {
-    const {start,end} = getDateRange(startDate || new Date(0), endDate || new Date())
+    const { start, end } = getDateRange(
+      startDate || new Date(0),
+      endDate || new Date()
+    );
 
     entries = entries.filter((entry) => {
       const entryDate = new Date(entry.date);

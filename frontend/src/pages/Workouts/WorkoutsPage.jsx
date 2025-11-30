@@ -167,7 +167,7 @@ export default function WorkoutsPage() {
                         className="exercise-difficulty"
                         style={{
                           backgroundColor: getDifficultyColor(
-                            exercise.difficulty
+                            exercise.difficulty,
                           ),
                         }}
                       >

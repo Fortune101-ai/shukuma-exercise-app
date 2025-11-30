@@ -153,11 +153,11 @@
   .dashboard-page-title {
     font-size: 32px;
   }
-  
+
   .stats-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .dashboard-grid {
     grid-template-columns: 1fr;
   }

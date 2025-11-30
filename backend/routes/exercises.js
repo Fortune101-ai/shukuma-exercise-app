@@ -59,4 +59,6 @@ router.get(
   asyncHandler(exerciseController.getExerciseById)
 );
 
+router.post('/', optionalAuth, exerciseController.createExercise);
+
 export default router;

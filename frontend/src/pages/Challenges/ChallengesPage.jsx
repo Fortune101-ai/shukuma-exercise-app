@@ -10,7 +10,7 @@ export default function ChallengesPage() {
   const [challenges, setChallenges] = useState([]);
   const [myChallenges, setMyChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("all"); 
+  const [activeTab, setActiveTab] = useState("all");
   const [stats, setStats] = useState(null);
   const toast = useToast();
 
@@ -197,7 +197,7 @@ export default function ChallengesPage() {
             const participating = isParticipating(challenge._id);
             const daysRemaining = Math.ceil(
               (new Date(challenge.endDate) - new Date()) /
-                (1000 * 60 * 60 * 24)
+                (1000 * 60 * 60 * 24),
             );
 
             return (
@@ -212,7 +212,7 @@ export default function ChallengesPage() {
                         className="challenge-difficulty"
                         style={{
                           backgroundColor: getDifficultyColor(
-                            challenge.difficulty
+                            challenge.difficulty,
                           ),
                         }}
                       >
@@ -270,7 +270,7 @@ export default function ChallengesPage() {
                             style={{
                               width: `${Math.min(
                                 (challenge.userProgress / challenge.goal) * 100,
-                                100
+                                100,
                               )}%`,
                             }}
                           ></div>

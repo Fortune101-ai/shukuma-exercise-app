@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer"
+import nodemailer from 'nodemailer';
 
 export const transporter = nodemailer.createTransport({
   host: process.env.SMTP_SERVER,
@@ -10,11 +10,10 @@ export const transporter = nodemailer.createTransport({
   },
 });
 
-
 export const emailConfig = {
   from: {
-    name: process.env.EMAIL_FROM_NAME || "Shukuma Fitness",
+    name: process.env.EMAIL_FROM_NAME || 'Shukuma Fitness',
     email: process.env.EMAIL_FROM || process.env.EMAIL_USER,
   },
-  frontendUrl: process.env.FRONTEND_URL
-}
+  frontendUrl: process.env.FRONTEND_URL,
+};

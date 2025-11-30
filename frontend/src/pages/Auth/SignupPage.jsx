@@ -155,7 +155,7 @@ export default function SignupPage() {
         setCredentials({
           user: data.user,
           token: data.token,
-        })
+        }),
       );
 
       toast.success("Account created successfully! Welcome to Shukuma!");

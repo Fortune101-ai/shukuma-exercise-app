@@ -88,7 +88,7 @@ export default function LoginPage() {
         setCredentials({
           user: data.user,
           token: data.token,
-        })
+        }),
       );
 
       toast.success("Welcome back!");

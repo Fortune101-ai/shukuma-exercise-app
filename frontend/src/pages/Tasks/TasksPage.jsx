@@ -1,175 +1,177 @@
-import { useState, useEffect } from "react"
-import { taskApi } from "../../services/api"
-import Card, { CardHeader, CardBody } from "../../components/ui/Card"
-import Button from "../../components/ui/Button"
-import Input from "../../components/ui/Input"
-import Spinner from "../../components/ui/Spinner"
-import useToast from "../../hooks/useToast"
-import "./TasksPage.css"
+import { useState, useEffect } from "react";
+import { taskApi } from "../../services/api";
+import Card, { CardHeader, CardBody } from "../../components/ui/Card";
+import Button from "../../components/ui/Button";
+import Input from "../../components/ui/Input";
+import Spinner from "../../components/ui/Spinner";
+import useToast from "../../hooks/useToast";
+import "./TasksPage.css";
 
 export default function TasksPage() {
-  const [tasks, setTasks] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState("all") // all, pending, completed
-  const [newTaskTitle, setNewTaskTitle] = useState("")
-  const [addingTask, setAddingTask] = useState(false)
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("all"); // all, pending, completed
+  const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [addingTask, setAddingTask] = useState(false);
   const [stats, setStats] = useState({
     total: 0,
     completed: 0,
     pending: 0,
     completionRate: 0,
-  })
-  const toast = useToast()
+  });
+  const toast = useToast();
 
   useEffect(() => {
-    fetchTasks()
-    fetchStats()
-  }, [])
+    fetchTasks();
+    fetchStats();
+  }, []);
 
   const fetchTasks = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const data = await taskApi.getAll({ limit: 100 })
-      setTasks(data.tasks || [])
+      const data = await taskApi.getAll({ limit: 100 });
+      setTasks(data.tasks || []);
     } catch (err) {
-      console.error("Error fetching tasks:", err)
-      toast.error("Failed to load tasks")
+      console.error("Error fetching tasks:", err);
+      toast.error("Failed to load tasks");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const fetchStats = async () => {
     try {
-      const data = await taskApi.getStats()
+      const data = await taskApi.getStats();
       setStats({
         total: data.totalTasks,
         completed: data.completedTasks,
         pending: data.pendingTasks,
         completionRate: data.completionRate,
-      })
+      });
     } catch (err) {
-      console.error("Error fetching stats:", err)
+      console.error("Error fetching stats:", err);
     }
-  }
+  };
 
   const handleAddTask = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!newTaskTitle.trim()) {
-      toast.error("Please enter a task title")
-      return
+      toast.error("Please enter a task title");
+      return;
     }
 
-    setAddingTask(true)
+    setAddingTask(true);
 
     try {
-      const data = await taskApi.create({ title: newTaskTitle.trim() })
-      setTasks((prev) => [data.task, ...prev])
-      setNewTaskTitle("")
-      toast.success("Task created!")
-      fetchStats()
+      const data = await taskApi.create({ title: newTaskTitle.trim() });
+      setTasks((prev) => [data.task, ...prev]);
+      setNewTaskTitle("");
+      toast.success("Task created!");
+      fetchStats();
     } catch (err) {
-      console.error("Error creating task:", err)
-      toast.error("Failed to create task")
+      console.error("Error creating task:", err);
+      toast.error("Failed to create task");
     } finally {
-      setAddingTask(false)
+      setAddingTask(false);
     }
-  }
+  };
 
   const handleToggleTask = async (taskId) => {
     try {
-      await taskApi.toggle(taskId)
+      await taskApi.toggle(taskId);
 
       setTasks((prev) =>
         prev.map((task) =>
-          task._id === taskId ? { ...task, completed: !task.completed } : task
-        )
-      )
+          task._id === taskId ? { ...task, completed: !task.completed } : task,
+        ),
+      );
 
-      toast.success("Task updated!")
-      fetchStats()
+      toast.success("Task updated!");
+      fetchStats();
     } catch (err) {
-      console.error("Error toggling task:", err)
-      toast.error("Failed to update task")
+      console.error("Error toggling task:", err);
+      toast.error("Failed to update task");
     }
-  }
+  };
 
   const handleDeleteTask = async (taskId) => {
     if (!window.confirm("Are you sure you want to delete this task?")) {
-      return
+      return;
     }
 
     try {
-      await taskApi.delete(taskId)
-      setTasks((prev) => prev.filter((task) => task._id !== taskId))
-      toast.success("Task deleted")
-      fetchStats()
+      await taskApi.delete(taskId);
+      setTasks((prev) => prev.filter((task) => task._id !== taskId));
+      toast.success("Task deleted");
+      fetchStats();
     } catch (err) {
-      console.error("Error deleting task:", err)
-      toast.error("Failed to delete task")
+      console.error("Error deleting task:", err);
+      toast.error("Failed to delete task");
     }
-  }
+  };
 
   const handleDeleteAllCompleted = async () => {
-    const completedCount = tasks.filter((t) => t.completed).length
+    const completedCount = tasks.filter((t) => t.completed).length;
 
     if (completedCount === 0) {
-      toast.error("No completed tasks to delete")
-      return
+      toast.error("No completed tasks to delete");
+      return;
     }
 
     if (!window.confirm(`Delete all ${completedCount} completed tasks?`)) {
-      return
+      return;
     }
 
     try {
-      await taskApi.deleteAllCompleted()
-      setTasks((prev) => prev.filter((task) => !task.completed))
-      toast.success(`${completedCount} tasks deleted`)
-      fetchStats()
+      await taskApi.deleteAllCompleted();
+      setTasks((prev) => prev.filter((task) => !task.completed));
+      toast.success(`${completedCount} tasks deleted`);
+      fetchStats();
     } catch (err) {
-      console.error("Error deleting completed tasks:", err)
-      toast.error("Failed to delete completed tasks")
+      console.error("Error deleting completed tasks:", err);
+      toast.error("Failed to delete completed tasks");
     }
-  }
+  };
 
   const handleCompleteAll = async () => {
-    const pendingCount = tasks.filter((t) => !t.completed).length
+    const pendingCount = tasks.filter((t) => !t.completed).length;
 
     if (pendingCount === 0) {
-      toast.error("No pending tasks to complete")
-      return
+      toast.error("No pending tasks to complete");
+      return;
     }
 
-    if (!window.confirm(`Mark all ${pendingCount} pending tasks as completed?`)) {
-      return
+    if (
+      !window.confirm(`Mark all ${pendingCount} pending tasks as completed?`)
+    ) {
+      return;
     }
 
     try {
-      await taskApi.completeAll()
-      setTasks((prev) => prev.map((task) => ({ ...task, completed: true })))
-      toast.success(`${pendingCount} tasks completed`)
-      fetchStats()
+      await taskApi.completeAll();
+      setTasks((prev) => prev.map((task) => ({ ...task, completed: true })));
+      toast.success(`${pendingCount} tasks completed`);
+      fetchStats();
     } catch (err) {
-      console.error("Error completing all tasks:", err)
-      toast.error("Failed to complete all tasks")
+      console.error("Error completing all tasks:", err);
+      toast.error("Failed to complete all tasks");
     }
-  }
+  };
 
   const getFilteredTasks = () => {
     if (filter === "pending") {
-      return tasks.filter((task) => !task.completed)
+      return tasks.filter((task) => !task.completed);
     } else if (filter === "completed") {
-      return tasks.filter((task) => task.completed)
+      return tasks.filter((task) => task.completed);
     }
-    return tasks
-  }
+    return tasks;
+  };
 
-  const filteredTasks = getFilteredTasks()
+  const filteredTasks = getFilteredTasks();
 
   if (loading) {
-    return <Spinner fullScreen text="Loading tasks..." />
+    return <Spinner fullScreen text="Loading tasks..." />;
   }
 
   return (
@@ -181,7 +183,6 @@ export default function TasksPage() {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="tasks-stats">
         <div className="stat-card">
           <div className="stat-label">Total Tasks</div>
@@ -205,7 +206,6 @@ export default function TasksPage() {
         </div>
       </div>
 
-      {/* Add Task Form */}
       <Card>
         <CardHeader>
           <h2 className="card-title">Add New Task</h2>
@@ -227,7 +227,6 @@ export default function TasksPage() {
         </CardBody>
       </Card>
 
-      {/* Filter and Bulk Actions */}
       <div className="tasks-controls">
         <div className="tasks-filters">
           <button
@@ -254,13 +253,16 @@ export default function TasksPage() {
           <Button variant="ghost" size="small" onClick={handleCompleteAll}>
             Complete All
           </Button>
-          <Button variant="ghost" size="small" onClick={handleDeleteAllCompleted}>
+          <Button
+            variant="ghost"
+            size="small"
+            onClick={handleDeleteAllCompleted}
+          >
             Delete Completed
           </Button>
         </div>
       </div>
 
-      {/* Tasks List */}
       <Card>
         <CardBody>
           {filteredTasks.length === 0 ? (
@@ -269,15 +271,21 @@ export default function TasksPage() {
                 {filter === "all"
                   ? "No tasks yet. Create your first task above!"
                   : filter === "pending"
-                  ? "No pending tasks. Great job!"
-                  : "No completed tasks yet."}
+                    ? "No pending tasks. Great job!"
+                    : "No completed tasks yet."}
               </p>
             </div>
           ) : (
             <div className="tasks-list">
               {filteredTasks.map((task) => (
-                <div key={task._id} className={`task-item ${task.completed ? "completed" : ""}`}>
-                  <div className="task-checkbox" onClick={() => handleToggleTask(task._id)}>
+                <div
+                  key={task._id}
+                  className={`task-item ${task.completed ? "completed" : ""}`}
+                >
+                  <div
+                    className="task-checkbox"
+                    onClick={() => handleToggleTask(task._id)}
+                  >
                     {task.completed && <span className="checkmark">✓</span>}
                   </div>
                   <div className="task-content">
@@ -286,7 +294,10 @@ export default function TasksPage() {
                       {new Date(task.createdAt).toLocaleDateString()}
                     </span>
                   </div>
-                  <button className="task-delete" onClick={() => handleDeleteTask(task._id)}>
+                  <button
+                    className="task-delete"
+                    onClick={() => handleDeleteTask(task._id)}
+                  >
                     🗑️
                   </button>
                 </div>
@@ -296,5 +307,5 @@ export default function TasksPage() {
         </CardBody>
       </Card>
     </div>
-  )
+  );
 }

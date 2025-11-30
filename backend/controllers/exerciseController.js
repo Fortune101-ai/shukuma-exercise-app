@@ -162,3 +162,22 @@ export const getExerciseStats = async (req, res) => {
     byDifficulty,
   });
 };
+
+// Add to exerciseController.js
+export const createExercise = async (req, res) => {
+  const exerciseData = req.body;
+
+  const exercise = new ExerciseCard({
+    ...exerciseData,
+    isActive: true,
+  });
+
+  await exercise.save();
+
+  logger.info(`Exercise created: ${exercise.name}`);
+
+  res.status(201).json({
+    message: 'Exercise created successfully',
+    exercise,
+  });
+};

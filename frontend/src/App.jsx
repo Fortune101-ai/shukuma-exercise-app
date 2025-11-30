@@ -45,9 +45,8 @@ function AppContent() {
             setCredentials({
               user: userData.user,
               token: token,
-            })
+            }),
           );
-
         } catch (error) {
           console.error("Token verification failed:", error.message);
 

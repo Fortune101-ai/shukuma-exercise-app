@@ -45,7 +45,11 @@
 .card-header {
   padding: 20px 24px;
   border-bottom: 1px solid var(--border-light);
-  background: linear-gradient(to bottom, var(--bg-primary), var(--bg-secondary));
+  background: linear-gradient(
+    to bottom,
+    var(--bg-primary),
+    var(--bg-secondary)
+  );
 }
 
 .card-body {
@@ -58,7 +62,6 @@
   background: var(--bg-secondary);
 }
 
-/* Padding variations */
 .card-padding-none .card-body {
   padding: 0;
 }

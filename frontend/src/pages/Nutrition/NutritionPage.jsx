@@ -63,7 +63,7 @@ export default function NutritionPage() {
     setFormData((prev) => ({
       ...prev,
       meals: prev.meals.map((meal, i) =>
-        i === index ? { ...meal, [field]: value } : meal
+        i === index ? { ...meal, [field]: value } : meal,
       ),
     }));
   };
@@ -338,7 +338,7 @@ export default function NutritionPage() {
                         <span className="total-value">
                           {log.meals.reduce(
                             (sum, meal) => sum + (meal.calories || 0),
-                            0
+                            0,
                           )}{" "}
                           cal
                         </span>
