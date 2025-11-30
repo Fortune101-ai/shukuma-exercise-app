@@ -48,7 +48,6 @@ function AppContent() {
             })
           );
 
-          console.log("Auth initialized - User:", userData.user.email);
         } catch (error) {
           console.error("Token verification failed:", error.message);
 

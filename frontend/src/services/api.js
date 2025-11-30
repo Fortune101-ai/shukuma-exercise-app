@@ -25,7 +25,7 @@ async function handleResponse(response) {
 }
 
 async function request(endpoint, options = {}) {
-  // Get token from localStorage directly
+
   const token = localStorage.getItem("shukuma_auth_token");
 
   const config = {
@@ -38,6 +38,9 @@ async function request(endpoint, options = {}) {
 
   if (token && !options.skipAuth) {
     config.headers.Authorization = `Bearer ${token}`;
+  
+  } else if (!token && !options.skipAuth) {
+    console.warn(`No token available for ${endpoint}`);
   }
 
   try {
@@ -45,15 +48,17 @@ async function request(endpoint, options = {}) {
     return await handleResponse(response);
   } catch (error) {
     if (error instanceof ApiError) {
+     
       if (error.status === 401 && token) {
+        console.error("❌ 401 Error - Clearing token");
         localStorage.removeItem("shukuma_auth_token");
+        window.location.href = "/login";
       }
       throw error;
     }
     throw new ApiError("Network error. Please check your connection.", 0, null);
   }
 }
-
 export const authApi = {
   login: (credentials) =>
     request("/auth/login", {

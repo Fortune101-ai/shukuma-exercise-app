@@ -1,12 +1,15 @@
-import { setToken, logout } from "../slices/auth.slice.js";
+import { setToken,setCredentials, logout } from "../slices/auth.slice.js";
 
 const AUTH_TOKEN = "shukuma_auth_token";
 
 export const authMiddleware = (store) => (next) => (action) => {
+
   const result = next(action);
 
   if (setToken.match(action)) {
+    
     const token = action.payload;
+    
     if (token) {
       try {
         localStorage.setItem(AUTH_TOKEN, token);
@@ -21,6 +24,13 @@ export const authMiddleware = (store) => (next) => (action) => {
       }
     }
   }
+
+  if (setCredentials.match(action)) {
+ 
+  if (action.payload?.token) {
+    localStorage.setItem(AUTH_TOKEN, action.payload.token);
+  }
+}
 
   if (logout.match(action)) {
     try {
