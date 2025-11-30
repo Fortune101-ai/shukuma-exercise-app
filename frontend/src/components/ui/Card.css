@@ -1,35 +1,76 @@
 .card {
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
   transition: all var(--transition-base);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-purple);
-  border-color: var(--primary);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-light);
 }
 
 .card-elevated {
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
   background-color: var(--bg-elevated);
 }
 
-.card-outlined {
-  border: 2px solid var(--border-light);
+.card-elevated:hover {
+  box-shadow: var(--shadow-xl);
 }
 
-.card-yellow-accent {
+.card-outlined {
+  border: 2px solid var(--border);
+}
+
+.card-teal-accent {
   border-left: 4px solid var(--primary);
 }
 
+.card-amber-accent {
+  border-left: 4px solid var(--accent);
+}
+
 .card-glow {
-  box-shadow: var(--shadow-purple);
+  box-shadow: var(--shadow-teal);
 }
 
 .card-glow:hover {
-  box-shadow: var(--shadow-purple-lg);
+  box-shadow: var(--shadow-teal-lg);
+}
+
+.card-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-light);
+  background: linear-gradient(to bottom, var(--bg-primary), var(--bg-secondary));
+}
+
+.card-body {
+  padding: 24px;
+}
+
+.card-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-light);
+  background: var(--bg-secondary);
+}
+
+/* Padding variations */
+.card-padding-none .card-body {
+  padding: 0;
+}
+
+.card-padding-small .card-body {
+  padding: 16px;
+}
+
+.card-padding-medium .card-body {
+  padding: 24px;
+}
+
+.card-padding-large .card-body {
+  padding: 32px;
 }

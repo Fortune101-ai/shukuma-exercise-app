@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -9,74 +12,91 @@ html {
 }
 
 body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-weight: 300;
 }
 
 :root {
-  --primary: #fbbf24;
-  --primary-dark: #f59e0b;
-  --primary-light: #fcd34d;
-  --primary-glow: rgba(251, 191, 36, 0.3);
-
-  --accent: #fbbf24;
-  --accent-orange: #fb923c;
-  --accent-gold: #eab308;
-  --accent-amber: #f59e0b;
-
+  /* New Color Palette - Coastal Energy */
+  --stormy-teal: #16697a;
+  --pacific-blue: #489fb5;
+  --sky-blue: #82c0cc;
+  --alabaster-grey: #ede7e3;
+  --amber-glow: #ffa62b;
+  
+  /* Primary Colors */
+  --primary: #16697a;
+  --primary-dark: #0f4d5a;
+  --primary-light: #489fb5;
+  --primary-glow: rgba(22, 105, 122, 0.3);
+  
+  /* Accent Colors */
+  --accent: #ffa62b;
+  --accent-light: #ffb84d;
+  --accent-dark: #e68a00;
+  
+  /* Secondary */
+  --secondary: #82c0cc;
+  --secondary-dark: #489fb5;
+  
+  /* Background Colors */
   --bg-primary: #ffffff;
-  --bg-secondary: #fafafa;
-  --bg-tertiary: #f5f5f5;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #ede7e3;
   --bg-elevated: #ffffff;
   --bg-overlay: rgba(255, 255, 255, 0.95);
-  --bg-dark: #1a1a1a;
-  --bg-dark-secondary: #2a2a2a;
-
+  --bg-dark: #16697a;
+  --bg-dark-secondary: #0f4d5a;
+  
+  /* Text Colors */
   --text-primary: #1a1a1a;
   --text-secondary: #4a4a4a;
   --text-muted: #6b7280;
   --text-light: #9ca3af;
   --text-white: #ffffff;
-
-  --border: #e5e5e5;
-  --border-light: #f0f0f0;
+  
+  /* Border Colors */
+  --border: #e0e0e0;
+  --border-light: #ede7e3;
   --border-dark: #d4d4d4;
-
+  
+  /* Status Colors */
   --error: #ef4444;
   --success: #10b981;
-  --warning: #f59e0b;
-  --info: #3b82f6;
-
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --warning: #ffa62b;
+  --info: #489fb5;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  --shadow-yellow: 0 4px 14px 0 rgba(251, 191, 36, 0.39);
-  --shadow-yellow-lg: 0 8px 24px 0 rgba(251, 191, 36, 0.5);
-
-  --gradient-primary: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  --gradient-warm: linear-gradient(135deg, #fb923c 0%, #fbbf24 100%);
-  --gradient-gold: linear-gradient(135deg, #eab308 0%, #fbbf24 100%);
-  --gradient-dark: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-  --gradient-overlay: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(255, 255, 255, 0.98) 100%
-  );
-
+  --shadow-lg: 0 10px 20px -3px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 20px 30px -5px rgba(0, 0, 0, 0.15);
+  --shadow-teal: 0 4px 14px 0 rgba(22, 105, 122, 0.25);
+  --shadow-teal-lg: 0 8px 24px 0 rgba(22, 105, 122, 0.35);
+  --shadow-amber: 0 4px 14px 0 rgba(255, 166, 43, 0.35);
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #16697a 0%, #489fb5 100%);
+  --gradient-warm: linear-gradient(135deg, #ffa62b 0%, #ffb84d 100%);
+  --gradient-coastal: linear-gradient(135deg, #489fb5 0%, #82c0cc 100%);
+  --gradient-dark: linear-gradient(135deg, #16697a 0%, #0f4d5a 100%);
+  --gradient-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.98) 100%);
+  
+  /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
   --radius-full: 9999px;
 
+  /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -86,7 +106,7 @@ body {
 }
 
 body {
-  background-color: var(--bg-primary);
+  background-color: var(--bg-secondary);
   color: var(--text-primary);
   line-height: 1.6;
 }
@@ -100,6 +120,7 @@ button {
   cursor: pointer;
   border: none;
   font-family: inherit;
+  font-weight: 500;
 }
 
 input,
@@ -109,7 +130,7 @@ select {
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -117,12 +138,12 @@ select {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-dark);
+  background: var(--primary);
   border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: var(--primary-dark);
 }
 
 *:focus-visible {
@@ -131,7 +152,7 @@ select {
 }
 
 ::selection {
-  background-color: var(--primary);
+  background-color: var(--sky-blue);
   color: var(--text-primary);
 }
 
@@ -142,18 +163,22 @@ select {
   background-clip: text;
 }
 
-.yellow-glow {
-  box-shadow: var(--shadow-yellow);
+.teal-glow {
+  box-shadow: var(--shadow-teal);
 }
 
-.yellow-glow-lg {
-  box-shadow: var(--shadow-yellow-lg);
+.teal-glow-lg {
+  box-shadow: var(--shadow-teal-lg);
+}
+
+.amber-glow {
+  box-shadow: var(--shadow-amber);
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
@@ -164,7 +189,7 @@ select {
 @keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateX(20px);
+    transform: translateX(30px);
   }
   to {
     opacity: 1;
@@ -173,31 +198,38 @@ select {
 }
 
 @keyframes pulse {
-  0%,
-  100% {
+  0%, 100% {
     opacity: 1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.7;
   }
 }
 
 @keyframes glow {
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(22, 105, 122, 0.3);
   }
   50% {
-    box-shadow: 0 0 40px rgba(251, 191, 36, 0.6);
+    box-shadow: 0 0 40px rgba(22, 105, 122, 0.6);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.5s ease-out;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .animate-slideInRight {
-  animation: slideInRight 0.5s ease-out;
+  animation: slideInRight 0.6s ease-out;
 }
 
 .animate-pulse {
@@ -206,4 +238,78 @@ select {
 
 .animate-glow {
   animation: glow 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Professional Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.page-title {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.03em;
+}
+
+.page-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+/* Utility Classes */
+.empty-state {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.stat-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  text-align: center;
+  transition: all var(--transition-base);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-light);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
 }

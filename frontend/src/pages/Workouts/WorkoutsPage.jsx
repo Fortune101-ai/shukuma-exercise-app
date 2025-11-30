@@ -10,7 +10,7 @@ import "./WorkoutsPage.css";
 export default function WorkoutsPage() {
   const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [viewMode, setViewMode] = useState("deck"); // "deck" or "grid"
+  const [viewMode, setViewMode] = useState("deck");
   const [filters, setFilters] = useState({
     category: "",
     difficulty: "",

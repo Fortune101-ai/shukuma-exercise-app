@@ -1,16 +1,17 @@
+/* -------------------------- */
+/* Card Container + Flip */
+/* -------------------------- */
 .exercise-card-container {
-  width: 100%;
-  max-width: 380px;
-  aspect-ratio: 2/3;
+  width: 280px;
+  height: 400px;
   perspective: 1000px;
-  margin: 0 auto;
 }
 
 .exercise-card-inner {
-  position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.6s;
+  position: relative;
+  transition: transform 0.6s ease;
   transform-style: preserve-3d;
 }
 
@@ -18,76 +19,68 @@
   transform: rotateY(180deg);
 }
 
+/* -------------------------- */
+/* Card Faces */
+/* -------------------------- */
 .exercise-card-face {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   backface-visibility: hidden;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: var(--shadow-xl);
-  border: 3px solid var(--border);
-}
-
-.card-back {
-  background: var(--bg-dark);
+  background: white;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Back */
+.card-back {
+  background: linear-gradient(135deg, #2dd4bf, #06b6d4);
+  color: white;
+  display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
 }
 
-.card-pattern {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 10px,
-      rgba(251, 191, 36, 0.03) 10px,
-      rgba(251, 191, 36, 0.03) 20px
-    );
-}
-
+/* Logo */
 .card-logo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  z-index: 1;
+  text-align: center;
 }
 
 .card-logo-icon {
-  font-size: 80px;
-  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.5));
+  font-size: 48px;
 }
 
 .card-logo-text {
-  font-size: 32px;
-  font-weight: 900;
-  color: var(--primary);
-  text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
-  letter-spacing: 4px;
+  margin-top: 8px;
+  font-size: 18px;
+  font-weight: 700;
 }
 
+/* -------------------------- */
+/* Front */
+/* -------------------------- */
 .card-front {
-  background: var(--bg-primary);
-  transform: rotateY(180deg);
+  background: #ffffff;
   display: flex;
   flex-direction: column;
 }
 
+.card-front,
+.card-back {
+  backface-visibility: hidden;
+  position: absolute;
+  inset: 0;
+}
+
+
+/* Image area */
 .card-image {
-  flex: 1.2;
-  background: var(--bg-tertiary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  height: 160px;
+  border-bottom: 1px solid #f1f1f1;
   overflow: hidden;
-  position: relative;
-  border-bottom: 3px solid var(--primary);
 }
 
 .card-image img {
@@ -96,131 +89,106 @@
   object-fit: cover;
 }
 
+/* Placeholder image clean fix */
 .card-placeholder {
-  font-size: 100px;
-  opacity: 0.2;
-}
-
-.card-placeholder-icon {
-  filter: grayscale(1);
-}
-
-.card-content {
-  flex: 1;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  background: var(--bg-primary);
-  position: relative;
-}
-
-.card-exercise-name {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin: 0;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.card-stats {
+  width: 100%;
+  height: 100%;
+  background: #f3f4f6;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 24px;
-  padding: 16px;
-  background: var(--bg-secondary);
-  border-radius: var(--radius-md);
-  border: 2px solid var(--border);
 }
 
-.card-stat {
+.card-placeholder-icon {
+  font-size: 40px;
+  opacity: 0.5;
+}
+
+/* -------------------------- */
+/* Content Area */
+/* -------------------------- */
+.card-content {
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  gap: 10px;
+  flex-grow: 1;
 }
 
-.stat-value {
-  font-size: 32px;
-  font-weight: 900;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-}
-
-.stat-label {
-  font-size: 11px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-.card-stat-divider {
-  width: 2px;
-  height: 40px;
-  background: var(--border);
-}
-
-.card-description {
-  font-size: 13px;
-  color: var(--text-secondary);
-  text-align: center;
-  line-height: 1.5;
-  margin: 0;
-}
-
+/* Difficulty Badge */
 .card-difficulty-badge {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  padding: 6px 16px;
-  border-radius: var(--radius-full);
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: var(--shadow-md);
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 8px;
+  text-transform: capitalize;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
 }
 
 .badge-beginner {
-  background: var(--success);
-  color: white;
+  background: #10b981;
 }
 
 .badge-intermediate {
-  background: var(--warning);
-  color: white;
+  background: #f59e0b;
 }
 
 .badge-advanced {
-  background: var(--error);
-  color: white;
+  background: #ef4444;
 }
 
-@media (max-width: 480px) {
-  .exercise-card-container {
-    max-width: 320px;
-  }
-
-  .card-logo-icon {
-    font-size: 60px;
-  }
-
-  .card-logo-text {
-    font-size: 24px;
-  }
-
-  .card-exercise-name {
-    font-size: 18px;
-  }
-
-  .stat-value {
-    font-size: 28px;
-  }
+/* Exercise Name */
+.card-exercise-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
 }
+
+/* Muscle groups */
+.card-muscles {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.muscle-icon {
+  font-size: 16px;
+}
+
+/* -------------------------- */
+/* Stats section */
+/* -------------------------- */
+.card-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.card-stat {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Divider */
+.card-stat-divider {
+  width: 1px;
+  height: 30px;
+  background: #e5e7eb;
+}
+

@@ -3,6 +3,8 @@ import "./ExerciseCard.css";
 export default function ExerciseCard({ exercise, isFlipped }) {
   if (!exercise) return null;
 
+  const displayMuscles = exercise.muscleGroups?.slice(0, 3).join(", ") || "Full Body";
+
   return (
     <div className={`exercise-card-container ${isFlipped ? "flipped" : ""}`}>
       <div className="exercise-card-inner">
@@ -15,6 +17,7 @@ export default function ExerciseCard({ exercise, isFlipped }) {
           </div>
         </div>
 
+        {/* Card Front */}
         <div className="exercise-card-face card-front">
           <div className="card-image">
             {exercise.imageUrl ? (
@@ -27,8 +30,18 @@ export default function ExerciseCard({ exercise, isFlipped }) {
           </div>
           
           <div className="card-content">
+            <div className={`card-difficulty-badge badge-${exercise.difficulty?.toLowerCase()}`}>
+              {exercise.difficulty}
+            </div>
+
             <h3 className="card-exercise-name">{exercise.name}</h3>
             
+            {/* Muscle Groups Display */}
+            <div className="card-muscles">
+              <span className="muscle-icon">🎯</span>
+              <span className="muscle-text">{displayMuscles}</span>
+            </div>
+
             <div className="card-stats">
               {exercise.reps ? (
                 <div className="card-stat">
@@ -45,17 +58,9 @@ export default function ExerciseCard({ exercise, isFlipped }) {
               <div className="card-stat-divider"></div>
               
               <div className="card-stat">
-                <span className="stat-value">{exercise.difficulty}</span>
-                <span className="stat-label">Level</span>
+                <span className="stat-value">{exercise.sets || 3}</span>
+                <span className="stat-label">Sets</span>
               </div>
-            </div>
-
-            {exercise.description && (
-              <p className="card-description">{exercise.description}</p>
-            )}
-
-            <div className={`card-difficulty-badge badge-${exercise.difficulty}`}>
-              {exercise.difficulty}
             </div>
           </div>
         </div>
